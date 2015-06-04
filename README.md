@@ -1,0 +1,2 @@
+# bashutil
+Bash utility functions
