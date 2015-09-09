@@ -149,3 +149,9 @@ function exesudo () {
     sudo bash "$tmpfile"
     rm "$tmpfile"
 }
+
+#how many cpu(s)
+function cpu_number ()
+{
+  cat /proc/cpuinfo | grep processor | wc -l
+}    # ----------  end of function cpu_number  ----------
