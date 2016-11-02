@@ -1,53 +1,57 @@
 #!/bin/bash
 #util functions
 
-SVC_USER="wibapp"
-
+#print current time
+function now() {
+    date +'%Y-%m-%dT%H:%M:%S%z'
+}
+    
 #print INFO level log.
 function info() {
-    echo "[INFO]  [$(date '+%F-%T')] $1"
+    echo "[INFO]  [$(now)] $@"
 }
+
 
 #print as an separator
 function banner() {
     info " ------------------------------------------------------------------------"
     info " ------------------------------------------------------------------------"
-    info "$1"
+    info " $@"
 }
 
 #print error msg in red to stderr.
 function err(){
-    echo -e "\e[31m[ERROR] [$(date '+%F-%T')] $@\e[0m" 1>&2
+    echo -e "\e[31m[ERROR] [$(now)] $@\e[0m" 1>&2
 }
 
 # print error msg and exit with status code 1
-function fail-exit() {
+function die() {
   err "$1"
   exit 1
 }
 
 #print warning msg in BLUE to stdout.
 function warn(){
-    echo -e "\e[34m[WARN]  [$(date '+%F-%T')] $@\e[0m" 1>&2
+    echo -e "\e[34m[WARN]  [$(now)] $@\e[0m" 1>&2
 }
 
 #important reminder in red.
 function reminder(){
     info " ------------------------------------------------------------------------"
     info " ------------------------------------------------------------------------"
-    echo -e "\e[31m[IMPORTANT] [$(date '+%F-%T')] $@\e[0m"
+    echo -e "\e[31m[IMPORTANT] [$(now)] $@\e[0m"
 }
 
 #===  FUNCTION  ================================================================
-#          NAME:  whoami-check
-#   DESCRIPTION: check if current user is expected, usually to check if it is $SVC_USER.
+#          NAME:  whoami_check
+#   DESCRIPTION: check if current user is expected, usually to check if it is exptected user.
 #                If not, try to call the usage() then exit 1
-#    PARAMETERS: [expected_user] , by default, it's $SVC_USER
+#    PARAMETERS: [expected_user] , by default, it's root
 #       RETURNS: 1 
 #===============================================================================
-function whoami-check ()
+function whoami_check ()
 {
-  local expected_user="${1:-$SVC_USER}"
+  local expected_user="${1:-$root}"
   if [[ "$(whoami)" != "${expected_user}" ]]; then
     err "Please run with user of ${expected_user}."
     type usage >/dev/null 2>&1
@@ -56,7 +60,7 @@ function whoami-check ()
     fi
     exit 1
   fi
-}    # ----------  end of function whoami-check  ----------
+}    # ----------  end of function whoami_check  ----------
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 # From http://serverfault.com/questions/177699/how-can-i-execute-a-bash-function-with-sudo/177764

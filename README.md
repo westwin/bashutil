@@ -1,2 +1,1 @@
-# bashutil
-Bash utility functions
+# Bash utility functions
